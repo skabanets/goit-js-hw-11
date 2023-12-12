@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.form-container {
+  background-color: fuchsia;
+  width: 100vw;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.search-form {
+  display: flex;
+  gap: 10px;
+}
+
+.input-form {
+  width: 320px;
+  height: 15px;
+  padding: 5px;
+}
+
+.sumbit-btn-form {
+  padding: 5px;
+  width: 80px;
+  cursor: pointer;
+}
