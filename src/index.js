@@ -12,13 +12,12 @@ let query = '';
 
 let options = {
   root: null,
-  rootMargin: '200px',
+  rootMargin: '100px',
   threshold: 1.0,
 };
 
 let callback = (entries, observer) => {
   entries.forEach(async entry => {
-    console.log(entry);
     if (entry.isIntersecting) {
       observer.unobserve(entry.target);
       page += 1;
@@ -26,10 +25,11 @@ let callback = (entries, observer) => {
       try {
         const images = await getImages(query, page);
         const { totalHits } = images;
-        console.log(images);
         const results = [...images.hits];
+
         const imagesMarkup = createImagesTemplte(results);
         refs.gallery.insertAdjacentHTML('beforeend', imagesMarkup);
+
         hasMoreImages(totalHits);
       } catch (error) {
         return Notify.failure(error.message);
