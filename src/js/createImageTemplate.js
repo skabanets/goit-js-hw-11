@@ -1,5 +1,6 @@
 export const createImageTemplate = image => {
-  return `<div class="photo-card">
+  return `<li class="image-card">
+  <a href="${image.largeImageURL}">
   <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
   <div class="info">
     <p class="info-item">
@@ -19,5 +20,6 @@ export const createImageTemplate = image => {
       <b>${image.downloads}</b>
     </p>
   </div>
-</div>`;
+</a>
+</li>`;
 };

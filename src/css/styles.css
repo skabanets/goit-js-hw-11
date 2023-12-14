@@ -3,15 +3,19 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+a {
+  display: block;
+  text-decoration: none;
+}
+
 img {
   display: block;
   max-width: 100%;
   height: auto;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 .header {
@@ -39,8 +43,13 @@ img {
   cursor: pointer;
 }
 
-.gallery {
+.gallery-container {
   padding: 20px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gallery {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -52,12 +61,11 @@ img {
   height: 160px;
 }
 
-.photo-card {
+.image-card {
   width: 220px;
   height: 200px;
   overflow: hidden;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  cursor: pointer;
 }
 
 .info {
@@ -74,4 +82,5 @@ img {
   align-items: center;
   gap: 3px;
   font-size: 10px;
+  color: black;
 }

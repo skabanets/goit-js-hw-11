@@ -1,4 +1,5 @@
 import { Notify } from 'notiflix';
+import SimpleLightbox from 'simplelightbox';
 import { getImages } from './js/pixabay-api';
 import { createImagesTemplte } from './js/createImagesTemplate';
 
@@ -7,12 +8,13 @@ const refs = {
   gallery: document.querySelector('.js-gallery'),
 };
 
-let page = 1;
+let page = null;
 let query = '';
+let imagesLightBox = {};
 
 let options = {
   root: null,
-  rootMargin: '100px',
+  rootMargin: '200px',
   threshold: 1.0,
 };
 
@@ -25,11 +27,16 @@ let callback = (entries, observer) => {
       try {
         const images = await getImages(query, page);
         const { totalHits } = images;
-        const results = [...images.hits];
+        let results = [...images.hits];
+
+        if (page === Math.ceil(totalHits / 40)) {
+          results = [...images.hits].slice(-20);
+        }
 
         const imagesMarkup = createImagesTemplte(results);
         refs.gallery.insertAdjacentHTML('beforeend', imagesMarkup);
 
+        imagesLightBox.refresh();
         hasMoreImages(totalHits);
       } catch (error) {
         return Notify.failure(error.message);
@@ -53,9 +60,8 @@ const onFormSubmit = async e => {
 
   try {
     const images = await getImages(query, page);
-
     const { total, totalHits } = images;
-    const results = [...images.hits];
+    let results = [...images.hits];
 
     if (total === 0) {
       throw new Error(
@@ -64,12 +70,12 @@ const onFormSubmit = async e => {
     }
 
     refs.gallery.innerHTML = '';
-
     Notify.success(`Hooray! We found ${totalHits} images.`);
 
     const imagesMarkup = createImagesTemplte(results);
     refs.gallery.insertAdjacentHTML('beforeend', imagesMarkup);
 
+    imagesLightBox = new SimpleLightbox('.gallery a');
     hasMoreImages(totalHits);
   } catch (error) {
     return Notify.failure(error.message);
@@ -78,9 +84,17 @@ const onFormSubmit = async e => {
 
 refs.form.addEventListener('submit', onFormSubmit);
 
-export const hasMoreImages = total => {
-  if (page < Math.ceil(total / 40)) {
-    const item = document.querySelector('.photo-card:last-child');
+const hasMoreImages = total => {
+  const totalPages = Math.ceil(total / 40);
+
+  if (page < totalPages) {
+    const item = document.querySelector('.image-card:last-child');
     observer.observe(item);
+  }
+
+  if (page === totalPages) {
+    return Notify.warning(
+      `We're sorry, but you've reached the end of search results.`
+    );
   }
 };
