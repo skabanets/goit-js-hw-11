@@ -29,6 +29,10 @@ let callback = (entries, observer) => {
         const { totalHits } = images;
         let results = [...images.hits];
 
+        if (page === Math.ceil(totalHits / 40)) {
+          results = [...images.hits].slice(-20);
+        }
+
         const imagesMarkup = createImagesTemplte(results);
         refs.gallery.insertAdjacentHTML('beforeend', imagesMarkup);
 
